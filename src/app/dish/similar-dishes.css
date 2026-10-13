@@ -1,0 +1,8 @@
+:host { display: block; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+h2 { font-size: 1.6rem; margin-bottom: 1.2rem; }
+.sim { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.item { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 1.2rem; text-decoration: none; color: var(--ink); }
+.item:hover { border-color: var(--wine); }
+.name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+.price { font-family: var(--font-display); font-weight: 700; color: var(--wine); }
+@media (max-width: 800px) { .sim { grid-template-columns: 1fr; } }

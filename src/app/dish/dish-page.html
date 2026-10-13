@@ -23,6 +23,11 @@
         </div>
       </div>
     </article>
+
+    <!-- HTML მზადდება სერვერზე (Google ხედავს), JS კი „ცოცხლდება“ მხოლოდ მაშინ, როცა ბლოკი ეკრანზე გამოჩნდება -->
+    @defer (hydrate on viewport) {
+      <app-similar-dishes [category]="d.categoryName" [dishes]="similar()" />
+    }
   } @else {
     <p class="empty-note">This dish is not on the menu.</p>
   }
