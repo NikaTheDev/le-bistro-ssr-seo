@@ -1,0 +1,29 @@
+<section class="dish-page container">
+  <a class="back" routerLink="/menu">← The menu</a>
+
+  @if (dish.isLoading()) {
+    <div class="layout">
+      <div class="skeleton ghost-photo"></div>
+      <div class="info"><div class="skeleton line w70"></div><div class="skeleton line w95"></div><div class="skeleton line w55"></div></div>
+    </div>
+  } @else if (dish.value(); as d) {
+    <article class="layout">
+      <div class="photo carte">
+        <app-dish-image [src]="d.slowImageUrl" [alt]="d.name" [priority]="true" />
+      </div>
+      <div class="info">
+        <span class="eyebrow">{{ d.categoryName }}</span>
+        <h1>{{ d.name }}</h1>
+        <p class="desc">{{ d.description }}</p>
+        <div class="buy">
+          <span class="price">₾{{ d.price }}</span>
+          <button type="button" class="btn btn--primary" [disabled]="!d.isAvailable" (click)="cart.add(d)">
+            @if (!d.isAvailable) { Sold out } @else if (inCart() > 0) { In cart · {{ inCart() }} } @else { Add to cart }
+          </button>
+        </div>
+      </div>
+    </article>
+  } @else {
+    <p class="empty-note">This dish is not on the menu.</p>
+  }
+</section>

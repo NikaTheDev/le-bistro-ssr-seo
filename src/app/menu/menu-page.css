@@ -1,0 +1,31 @@
+.menu-page { padding-top: 3.5rem; }
+.section-head .lede { margin-top: 0.8rem; color: var(--ink-soft); font-family: var(--font-display); font-style: italic; font-size: 1.15rem; }
+.toolbar { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.chips { display: flex; gap: 0.5rem; flex-wrap: wrap; flex: 1; }
+.cat-chip {
+  padding: 0.45rem 1.05rem; border-radius: 999px; border: 1px solid var(--line-strong);
+  background: var(--paper-raised); color: var(--ink); font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: 0.15s;
+}
+.cat-chip:hover { border-color: var(--wine); color: var(--wine); }
+.cat-chip.active { background: var(--wine); border-color: var(--wine); color: var(--paper-raised); }
+.search { position: relative; min-width: 15rem; }
+.search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--ink-faint); pointer-events: none; }
+.search-input { padding-left: 2.3rem; border-radius: 999px; }
+.bar-slot { height: 3px; margin: 0.4rem 0 1.6rem; }
+.results-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 1.4rem; }
+.results-head h2 { font-size: 1.5rem; }
+.results-head .count { color: var(--ink-soft); font-size: 0.9rem; font-weight: 600; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+.ghost-card { overflow: hidden; }
+.ghost-photo { aspect-ratio: 4 / 3; border-radius: 0; }
+.ghost-body { padding: 1rem 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.ghost-line { height: 0.85rem; }
+.w70 { width: 70%; height: 1.1rem; }
+.w95 { width: 95%; }
+.w55 { width: 55%; }
+.catalog { height: min(70vh, 44rem); } /* viewport-ს ფიქსირებული სიმაღლე სჭირდება */
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+  .search { width: 100%; }
+}

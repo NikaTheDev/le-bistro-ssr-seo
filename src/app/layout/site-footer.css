@@ -1,0 +1,17 @@
+.site-footer { margin-top: 5rem; background: var(--wine-deep); color: rgba(246, 241, 231, 0.85); }
+.cols { display: grid; grid-template-columns: 1.5fr 0.8fr 1.1fr 1fr; gap: 2.5rem; padding: 3.5rem 0 2.5rem; }
+.page-link { display: block; color: rgba(246, 241, 231, 0.85); text-decoration: none; font-size: 0.95rem; padding: 0.18rem 0; }
+.page-link:hover { color: var(--brass-soft); }
+.brand { display: inline-flex; flex-direction: column; line-height: 1; text-decoration: none; }
+.brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.7rem; color: var(--paper-raised); }
+.brand-sub { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--brass-soft); margin-top: 0.25rem; }
+.tagline { margin-top: 1rem; max-width: 22rem; font-size: 0.95rem; }
+.col-title { font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass-soft); margin-bottom: 0.9rem; }
+.col p { margin: 0.25rem 0; font-size: 0.95rem; }
+.muted { color: rgba(246, 241, 231, 0.55); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-top: 0.8rem !important; font-size: 0.8rem !important; }
+.tel { color: var(--paper-raised); text-decoration: none; }
+.tel:hover { color: var(--brass-soft); }
+.rights { border-top: 1px solid rgba(246, 241, 231, 0.15); padding: 1.1rem 0; font-size: 0.82rem; color: rgba(246, 241, 231, 0.55); }
+@media (max-width: 760px) {
+  .cols { grid-template-columns: 1fr; gap: 2rem; padding: 2.5rem 0 2rem; }
+}

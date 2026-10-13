@@ -1,0 +1,6 @@
+:host { display: block; }
+/* ადგილი წინასწარ არის დაჯავშნული: ჩარჩოს პროპორცია ცნობილია სურათის ჩამოსვლამდე → CLS = 0 */
+.frame { position: relative; aspect-ratio: var(--ratio, 4 / 3); overflow: hidden; background: var(--paper-deep); }
+img { object-fit: cover; opacity: 0; transition: opacity 0.5s; }
+img.visible { opacity: 1; }
+.fallback { display: grid; place-items: center; height: 100%; color: var(--ink-faint); font-size: 2rem; }

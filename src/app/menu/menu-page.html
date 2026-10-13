@@ -1,0 +1,42 @@
+<section class="menu-page container">
+  <div class="section-head">
+    <span class="eyebrow">La carte</span>
+    <h1>The menu</h1>
+    <p class="lede">Cooked from scratch every day. Prices are in lari, service is on the house.</p>
+  </div>
+
+  <div class="toolbar">
+    <div role="tablist" aria-label="Categories" class="chips">
+      <button type="button" class="cat-chip" [class.active]="category() === ''" (click)="category.set('')">Everything</button>
+      @for (cat of categories.value(); track cat.id) {
+        <button type="button" class="cat-chip" [class.active]="category() === cat.slug" (click)="category.set(cat.slug)">{{ cat.nameEn }}</button>
+      }
+    </div>
+  </div>
+  <div aria-hidden="true" class="bar-slot">
+    @if (dishes.isLoading()) {
+      <div class="loading-bar"></div>
+    }
+  </div>
+
+  @if (dishes.status() === 'loading') {
+    <div class="grid">
+      @for (g of ghosts; track g) {
+        <div class="carte ghost-card">
+          <div class="skeleton ghost-photo"></div>
+          <div class="ghost-body"><div class="skeleton ghost-line w70"></div><div class="skeleton ghost-line w95"></div><div class="skeleton ghost-line w55"></div></div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="results-head">
+      <h2>{{ heading() }}</h2>
+      <span class="count">{{ visible().length }} dishes</span>
+    </div>
+    <div class="grid">
+      @for (dish of visible(); track dish.id) {
+        <app-dish-card [dish]="dish" [priority]="priorityIds().includes(dish.id)" />
+      }
+    </div>
+  }
+</section>
