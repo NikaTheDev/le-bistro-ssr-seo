@@ -1,59 +1,54 @@
-# LeBistroSsr
+# Le Bistro — მენიუ, რომელსაც Google ხედავს
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
+სასტარტო პროექტი **ლექცია 64-ისთვის: SSR & Hydration (@angular/ssr)** (AI-Native Front-End Development).
+ვიზუალი — ორიგინალი პროექტიდან ([srms.stepacademy.ge/menu](https://srms.stepacademy.ge/menu)), მონაცემები — SRMS API.
 
-## Development server
+`main` ბრენჩზე აპი მუშაობს მხოლოდ ბრაუზერში (CSR): სერვერი ცარიელ `<app-root>`-ს აგზავნის. ლექციაზე მას SSR-ს ვამატებთ.
 
-To start a local development server, run:
+## გაშვება
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+> ⚠️ საჭიროა **Node.js 22.22.3+** ან **24.15+** (Angular 22-ის მოთხოვნა). შეამოწმე: `node -v`
 
 ```bash
-ng generate component component-name
+git clone <რეპოზიტორიის ბმული>
+cd le-bistro-ssr
+npm install
+npm start          # http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## როგორ ვნახოთ, რას ხედავს რობოტი
+- **View Source:** `Ctrl+U` — სერვერის გამოგზავნილი HTML (არა ის, რაც DevTools-ის Elements-ში ჩანს).
+- **JavaScript-ის გამორთვა:** DevTools → `Ctrl+Shift+P` → „Disable JavaScript“ → გვერდის განახლება.
+
+## SSR-ის შემდეგ (ბრენჩი `step-1-ssr` და შემდეგ)
+```bash
+npm start                         # dev სერვერი SSR-ით (ng serve)
+npm run build                     # build + prerender (საჭიროა ინტერნეტი — API)
+npm run serve:ssr:le-bistro-ssr   # production Node სერვერი: http://localhost:4000
+```
+- `angular.json` → `security.allowedHosts: ["localhost"]` — Angular 22-ის SSR სერვერი სხვა `Host`-ს არ ემსახურება. რეალურ დომენზე იქ დომენი ჩაწერე.
+- `src/server.ts`-ში არის `/api` და `/images` proxy (CORS მხოლოდ ბრაუზერის წესია — სერვერი API-ს პირდაპირ იძახებს).
+
+## ბრენჩები (თუ ჩამორჩი)
+| ბრენჩი | რა არის დამატებული |
+|---|---|
+| `main` | არაფერი — მხოლოდ ბრაუზერი (CSR) |
+| `step-1-ssr` | `ng add @angular/ssr`, რენდერის რეჟიმები, `getPrerenderParams`, proxy სერვერზე, `localStorage` / `window` ხაფანგები |
+| `step-2-hydration` | + Incremental Hydration: `@defer (hydrate on viewport)` |
+| `step-3-seo` | + `Title`, `Meta`, Open Graph — **საბოლოო ვერსია** |
 
 ```bash
-ng generate --help
+git switch step-1-ssr && npm install   # ახალი პაკეტები (@angular/ssr, express)
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
+## სტრუქტურა
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+src/app/
+  menu/        ← მენიუ (ბარათები, ფოტოები — ლექცია 63-დან)
+  dish/        ← კერძის გვერდი /menu/:id
+  cart/        ← კალათა: CartStore (localStorage) + /cart გვერდი
+  layout/      ← ქუდი (სქროლის ჩრდილი — window!) და ძირი
+  core/        ← API_ORIGIN
+proxy.conf.json  ← /api და /images → https://srmsapi.stepacademy.ge
+AGENTS.md        ← წესები AI-ასისტენტისთვის
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
