@@ -22,18 +22,29 @@ npm start          # http://localhost:4200
 
 ## SSR-ის შემდეგ (ბრენჩი `step-1-ssr` და შემდეგ)
 ```bash
-npm start                         # dev სერვერი SSR-ით (ng serve)
+npm start                         # dev სერვერი SSR-ით (ng serve), http://localhost:4200
 npm run build                     # build + prerender (საჭიროა ინტერნეტი — API)
 npm run serve:ssr:le-bistro-ssr   # production Node სერვერი: http://localhost:4000
 ```
-- `angular.json` → `security.allowedHosts: ["localhost"]` — Angular 22-ის SSR სერვერი სხვა `Host`-ს არ ემსახურება. რეალურ დომენზე იქ დომენი ჩაწერე.
-- `src/server.ts`-ში არის `/api` და `/images` proxy (CORS მხოლოდ ბრაუზერის წესია — სერვერი API-ს პირდაპირ იძახებს).
+
+## ხაფანგები, რომლებსაც ლექციაზე ვხვდებით
+| სიმპტომი | მიზეზი | გამოსავალი |
+|---|---|---|
+| `ReferenceError: localStorage is not defined` (500) | სერვერზე `localStorage` არ არსებობს | სერვისში `isPlatformBrowser(inject(PLATFORM_ID))` |
+| `ReferenceError: window is not defined` (500) | სერვერზე `window` არ არსებობს | კომპონენტში `afterNextRender(() => …)` |
+| build: `'menu/:id' … 'getPrerenderParams' is missing` | Prerender-მა უნდა იცოდეს, რომელი `:id`-ები ააწყოს | `app.routes.server.ts` → `getPrerenderParams` |
+| build: `Unable to handle request` / `TimeoutError` | `proxy.conf.json` მუშაობს მხოლოდ `ng serve`-ში | `src/server.ts`-ში `/api` proxy (CORS მხოლოდ ბრაუზერის წესია) |
+| `Header "host" with value "localhost:4000" is not allowed.` (400) | Angular 22-ის დაცვა (SSRF): `allowedHosts` ცარიელია | `angular.json` → `"allowedHosts": ["localhost"]`; გახსენი **localhost**, არა 127.0.0.1 |
+| `NG0500: During hydration Angular expected <tr> but found <tbody>` | სერვერის და ბრაუზერის DOM განსხვავდება | ვალიდური HTML (`<table>`-ში `<tbody>`) |
+
+- **HMR გამორთულია** (`angular.json` → `serve.options.hmr: false`): HMR-ით `@defer` ბლოკები ერთბაშად იტვირთება (NG0751) და Incremental Hydration-ს ვერ დავინახავდით.
+- `npm run build` ბრაუზერის proxy-ს არ იყენებს: მენიუ და კერძის 28 გვერდი API-დან build-ის დროს მოდის `src/server.ts`-ის proxy-ით.
 
 ## ბრენჩები (თუ ჩამორჩი)
 | ბრენჩი | რა არის დამატებული |
 |---|---|
 | `main` | არაფერი — მხოლოდ ბრაუზერი (CSR) |
-| `step-1-ssr` | `ng add @angular/ssr`, რენდერის რეჟიმები, `getPrerenderParams`, proxy სერვერზე, `localStorage` / `window` ხაფანგები |
+| `step-1-ssr` | `ng add @angular/ssr`, რენდერის რეჟიმები, `getPrerenderParams`, proxy სერვერზე, `allowedHosts`, `localStorage` / `window` ხაფანგები |
 | `step-2-hydration` | + Incremental Hydration: `@defer (hydrate on viewport)` |
 | `step-3-seo` | + `Title`, `Meta`, Open Graph — **საბოლოო ვერსია** |
 
@@ -49,6 +60,6 @@ src/app/
   cart/        ← კალათა: CartStore (localStorage) + /cart გვერდი
   layout/      ← ქუდი (სქროლის ჩრდილი — window!) და ძირი
   core/        ← API_ORIGIN
-proxy.conf.json  ← /api და /images → https://srmsapi.stepacademy.ge
+proxy.conf.json  ← /api და /images → https://srmsapi.stepacademy.ge (dev სერვერი)
 AGENTS.md        ← წესები AI-ასისტენტისთვის
 ```
