@@ -8,6 +8,8 @@
 ## გაშვება
 
 > ⚠️ საჭიროა **Node.js 22.22.3+** ან **24.15+** (Angular 22-ის მოთხოვნა). შეამოწმე: `node -v`
+>
+> 📌 Angular-ის ვერსიები `package.json`-ში **ზუსტადაა დაფიქსირებული** (`22.2.3`, CLI `22.2.4`, `^`-ის გარეშე). ასე `ng add @angular/ssr` ზუსტად შესაბამის ვერსიას დააყენებს. ლექციამდე ნუ გაუშვებთ `npm update`-ს.
 
 ```bash
 git clone <რეპოზიტორიის ბმული>
@@ -36,6 +38,9 @@ npm run serve:ssr:le-bistro-ssr   # production Node სერვერი: http:
 | build: `Unable to handle request` / `TimeoutError` | `proxy.conf.json` მუშაობს მხოლოდ `ng serve`-ში | `src/server.ts`-ში `/api` proxy (CORS მხოლოდ ბრაუზერის წესია) |
 | `Header "host" with value "localhost:4000" is not allowed.` (400) | Angular 22-ის დაცვა (SSRF): `allowedHosts` ცარიელია | `angular.json` → `"allowedHosts": ["localhost"]`; გახსენი **localhost**, არა 127.0.0.1 |
 | `NG0500: During hydration Angular expected <tr> but found <tbody>` | სერვერის და ბრაუზერის DOM განსხვავდება | ვალიდური HTML (`<table>`-ში `<tbody>`) |
+| `ng add`: `npm error ERESOLVE` … `Conflicting peer dependency: @angular/core` | `package.json`-ში `^22.2.0`: npm Angular-ის ახალ patch-ვერსიას იღებს, დაყენებული კი ძველია | ზუსტი ვერსიები (როგორც ამ პროექტში). სხვა პროექტში: ჯერ `ng update @angular/core @angular/cli` |
+| build: `Inlining of fonts failed … fonts.googleapis.com` | build Google Fonts-ს ვერ უკავშირდება (ინტერნეტი/firewall) | ინტერნეტის შემოწმება; დროებით — `angular.json` → production → `"optimization": { "fonts": false }` |
+| build: `Http failure response … 502 Bad Gateway` | build-ისას API (srmsapi) მიუწვდომელია | ინტერნეტი და API-ს შემოწმება, შემდეგ ხელახლა `npm run build` |
 
 - **HMR გამორთულია** (`angular.json` → `serve.options.hmr: false`): HMR-ით `@defer` ბლოკები ერთბაშად იტვირთება (NG0751) და Incremental Hydration-ს ვერ დავინახავდით.
 - `npm run build` ბრაუზერის proxy-ს არ იყენებს: მენიუ და კერძის 28 გვერდი API-დან build-ის დროს მოდის `src/server.ts`-ის proxy-ით.
@@ -58,7 +63,7 @@ src/app/
   menu/        ← მენიუ (ბარათები, ფოტოები — ლექცია 63-დან)
   dish/        ← კერძის გვერდი /menu/:id
   cart/        ← კალათა: CartStore (localStorage) + /cart გვერდი
-  layout/      ← ქუდი (სქროლის ჩრდილი — window!) და ძირი
+  layout/      ← ჰედერი (ჩრდილი სქროლისას — window!) და ფუტერი
   core/        ← API_ORIGIN
 proxy.conf.json  ← /api და /images → https://srmsapi.stepacademy.ge (dev სერვერი)
 AGENTS.md        ← წესები AI-ასისტენტისთვის
