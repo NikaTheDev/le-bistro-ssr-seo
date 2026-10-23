@@ -1,9 +1,15 @@
 # Le Bistro — მენიუ, რომელსაც Google ხედავს
 
-სასტარტო პროექტი **ლექცია 64-ისთვის: SSR & Hydration (@angular/ssr)** (AI-Native Front-End Development).
+სასტარტო პროექტი **ლექცია 64-ისთვის: SSR & Hydration (@angular/ssr)** (AI-Native Front-End Development) — **ვერსია SEO ნაწილიდან გასაგრძელებლად**.
 ვიზუალი — ორიგინალი პროექტიდან ([srms.stepacademy.ge/menu](https://srms.stepacademy.ge/menu)), მონაცემები — SRMS API.
 
-`main` ბრენჩზე აპი მუშაობს მხოლოდ ბრაუზერში (CSR): სერვერი ცარიელ `<app-root>`-ს აგზავნის. ლექციაზე მას SSR-ს ვამატებთ.
+ამ ვერსიაში ლექციის 1–3 ნაწილი **უკვე გაკეთებულია** — `main` ბრენჩზე:
+- `ng add @angular/ssr`, რენდერის რეჟიმები (`app.routes.server.ts`), `getPrerenderParams`;
+- `/api` proxy `src/server.ts`-ში, `allowedHosts: ["localhost"]`;
+- `localStorage` / `window` ხაფანგები გასწორებულია (`isPlatformBrowser`, `afterNextRender`);
+- Incremental Hydration: `@defer (hydrate on viewport)`.
+
+ლექციაზე აქედან ვაგრძელებთ **მე-4 ნაწილით: SEO — `Title`, `Meta`, Open Graph**. მზა პასუხი — ბრენჩი `step-3-seo`.
 
 ## გაშვება
 
@@ -13,7 +19,7 @@
 
 ```bash
 git clone <რეპოზიტორიის ბმული>
-cd le-bistro-ssr
+cd le-bistro-ssr-seo
 npm install
 npm start          # http://localhost:4200
 ```
@@ -22,7 +28,7 @@ npm start          # http://localhost:4200
 - **View Source:** `Ctrl+U` — სერვერის გამოგზავნილი HTML (არა ის, რაც DevTools-ის Elements-ში ჩანს).
 - **JavaScript-ის გამორთვა:** DevTools → `Ctrl+Shift+P` → „Disable JavaScript“ → გვერდის განახლება.
 
-## SSR-ის შემდეგ (ბრენჩი `step-1-ssr` და შემდეგ)
+## build და production სერვერი
 ```bash
 npm start                         # dev სერვერი SSR-ით (ng serve), http://localhost:4200
 npm run build                     # build + prerender (საჭიროა ინტერნეტი — API)
@@ -46,15 +52,13 @@ npm run serve:ssr:le-bistro-ssr   # production Node სერვერი: http:
 - `npm run build` ბრაუზერის proxy-ს არ იყენებს: მენიუ და კერძის 28 გვერდი API-დან build-ის დროს მოდის `src/server.ts`-ის proxy-ით.
 
 ## ბრენჩები (თუ ჩამორჩი)
-| ბრენჩი | რა არის დამატებული |
+| ბრენჩი | რა არის |
 |---|---|
-| `main` | არაფერი — მხოლოდ ბრაუზერი (CSR) |
-| `step-1-ssr` | `ng add @angular/ssr`, რენდერის რეჟიმები, `getPrerenderParams`, proxy სერვერზე, `allowedHosts`, `localStorage` / `window` ხაფანგები |
-| `step-2-hydration` | + Incremental Hydration: `@defer (hydrate on viewport)` |
+| `main` | SSR + Hydration მზადაა — **აქედან ვიწყებთ SEO-ს** |
 | `step-3-seo` | + `Title`, `Meta`, Open Graph — **საბოლოო ვერსია** |
 
 ```bash
-git switch step-1-ssr && npm install   # ახალი პაკეტები (@angular/ssr, express)
+git switch step-3-seo   # მზა პასუხი
 ```
 
 ## სტრუქტურა
