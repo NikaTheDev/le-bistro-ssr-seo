@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, afterNextRender, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartStore } from '../cart/cart-store';
 
@@ -42,9 +42,14 @@ export class SiteHeader {
   protected cart = inject(CartStore);
 
   /** სქროლისას ქუდს ჩრდილი ემატება */
-  protected scrolled = signal(window.scrollY > 8);
+  protected scrolled = signal(false);
 
   constructor() {
-    window.addEventListener('scroll', () => this.scrolled.set(window.scrollY > 8), { passive: true });
+    // window არსებობს მხოლოდ ბრაუზერში → კოდი ვუშვებთ პირველი ხატვის შემდეგ
+    afterNextRender(() => {
+      const check = () => this.scrolled.set(window.scrollY > 8);
+      check();
+      window.addEventListener('scroll', check, { passive: true });
+    });
   }
 }
